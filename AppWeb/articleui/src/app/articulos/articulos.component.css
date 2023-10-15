@@ -1,0 +1,28 @@
+/* my-component.component.css */
+
+/* Estilos para centrar el contenido */
+.container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+/* Estilos para los botones */
+.btn {
+  margin: 5px;
+  padding: 10px 20px;
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background-color: #f2f2f2;
+}

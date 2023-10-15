@@ -1,0 +1,3 @@
+<app-login *ngIf="mostrarLogin" (showSignupEvent)="mostrarSignup = true; mostrarLogin = false;"></app-login>
+<app-signup *ngIf="mostrarSignup" (showLoginEvent)="mostrarSignup = false; mostrarLogin = true;"></app-signup>
+<app-articulos *ngIf="mostrarArticulos" (showArticulosEvent)="mostrarArticulos = true; mostrarLogin = false;"></app-articulos>

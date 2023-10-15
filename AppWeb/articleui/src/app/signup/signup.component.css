@@ -1,0 +1,87 @@
+/* signup.component.css */
+
+/* Estilos para el contenedor principal del formulario */
+.register-container {
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+/* Estilos para el título "Registrarse" */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Estilos para los campos de formulario */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Estilos para el botón "Registrarse" */
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Estilos para el botón "Volver a Iniciar Sesión" */
+button[type="button"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button[type="button"]:hover {
+  background-color: #999;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+  /* Añade estas líneas para cambiar el color al hacer hover */
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3; /* Cambia el color al hacer hover */
+}
