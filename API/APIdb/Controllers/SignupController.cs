@@ -1,6 +1,8 @@
 ﻿using APIdb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -30,12 +32,20 @@ namespace APIdb.Controllers
                     // Inicia la conexión
                     connection.Open();
                     // Se llama al SP (nombre de SP, conexión)
-                    SqlCommand command = new SqlCommand("RegistrarUsuario", connection);
+                    SqlCommand command = new SqlCommand("RegistrarEmpleado", connection);
                     command.CommandType = CommandType.StoredProcedure;
 
                     // Parámetros de entrada (BD, Modelo)
-                    command.Parameters.AddWithValue("@UserName", signup.UserName);
+                    command.Parameters.AddWithValue("@Nombre", signup.Nombre);
+                    command.Parameters.AddWithValue("@IdDocIdentidad", signup.IdDocIdentidad);
+                    command.Parameters.AddWithValue("@ValorDocIdentidad", signup.ValorDocIdentidad);
+                    command.Parameters.AddWithValue("@FechaNacimiento", signup.FechaNacimiento);
+                    command.Parameters.AddWithValue("@IdPuesto", signup.IdPuesto);
+                    command.Parameters.AddWithValue("@IdDepartamento", signup.IdDepartamento);
+                    command.Parameters.AddWithValue("@Activo", signup.Activo);
+                    command.Parameters.AddWithValue("@Username", signup.Username);
                     command.Parameters.AddWithValue("@Password", signup.Password);
+                    command.Parameters.AddWithValue("@Tipo", signup.Tipo);
 
                     // Parámetros de salida
                     SqlParameter registradoParam = new SqlParameter("@Registrado", SqlDbType.Bit);
@@ -46,18 +56,25 @@ namespace APIdb.Controllers
                     messageParam.Direction = ParameterDirection.Output;
                     command.Parameters.Add(messageParam);
 
-                    // Ejecuta el procedimeinto almacenado
+                    // Nuevo parámetro de salida para el tipo de usuario
+                    SqlParameter tipoUsuarioOutputParam = new SqlParameter("@TipoUsuarioOutput", SqlDbType.Int);
+                    tipoUsuarioOutputParam.Direction = ParameterDirection.Output;
+                    command.Parameters.Add(tipoUsuarioOutputParam);
+
+                    // Ejecuta el procedimiento almacenado
                     command.ExecuteNonQuery();
 
                     // Obtiene los valores de los parámetros de salida
                     bool registrado = (bool)registradoParam.Value;
                     string message = messageParam.Value.ToString();
+                    int tipoUsuarioOutput = (int)tipoUsuarioOutputParam.Value;
 
                     // Instancia de tu modelo de respuesta
-                    var response = new Response
+                    var response = new 
                     {
-                        statusCode = registrado,
-                        statusMessage = message
+                        StatusCode = registrado,
+                        StatusMessage = message,
+                        TipoUsuario = tipoUsuarioOutput
                     };
 
                     return Ok(response);
@@ -66,7 +83,7 @@ namespace APIdb.Controllers
             catch (Exception ex)
             {
                 // Manejo de errores
-                return StatusCode(500, "Error al registrar el usuario: " + ex.Message);
+                return StatusCode(500, "Error al registrar el empleado: " + ex.Message);
             }
         }
     }

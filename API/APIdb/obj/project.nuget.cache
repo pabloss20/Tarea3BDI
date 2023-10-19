@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "e4SINSvwd4ZqcoYpejplWP66V8pgq3dZGM5RloZVSPpBQp6RvVmclZgTXbmKhkEDUepq5RA4Yxrv7Qe0HE0jHg==",
+  "dgSpecHash": "rLR3f3eUbDwughmS8D1ooMj9QOWjrgzRje7df7xnamugFMjz2X+E6evSpzLdHKKJRyBHQEg3fefENCi7WYwX+g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\jpsan\\Documents\\GithubRepos\\Tarea1BDI\\Tarea1BDI\\API\\APIdb\\APIdb.csproj",
+  "projectFilePath": "C:\\Users\\jpsan\\Documents\\GithubRepos\\TareaFinalBDI\\Tarea3BDI\\API\\APIdb\\APIdb.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\6.0.0\\microsoft.aspnetcore.jsonpatch.6.0.0.nupkg.sha512",
     "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.0\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.0.nupkg.sha512",
@@ -27,10 +27,10 @@
     "C:\\Users\\jpsan\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\jpsan\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
     "C:\\Users\\jpsan\\.nuget\\packages\\system.text.json\\7.0.3\\system.text.json.7.0.3.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.22\\microsoft.windowsdesktop.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.22\\microsoft.netcore.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.22\\microsoft.aspnetcore.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.22\\microsoft.netcore.app.host.win-x64.6.0.22.nupkg.sha512"
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.23\\microsoft.windowsdesktop.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.23\\microsoft.netcore.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.23\\microsoft.aspnetcore.app.ref.6.0.23.nupkg.sha512",
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.23\\microsoft.netcore.app.host.win-x64.6.0.23.nupkg.sha512"
   ],
   "logs": []
 }
