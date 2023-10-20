@@ -6,7 +6,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[SP_FiltroXNombreEmpleado]
+ALTER PROCEDURE [dbo].[SP_FiltroXNombreEmpleado]
 (
 	@inIdUser INT
 	, @inUsername VARCHAR(16)
@@ -45,6 +45,7 @@ BEGIN
 			ON E.IdPuesto = P.Id
 			WHERE LOWER(E.Nombre)
 			LIKE LOWER('%' + @inStringCajaDeTexto + '%')
+			ORDER BY E.Nombre ASC
 		END
 
 		SET @outRetorno = 1
@@ -65,8 +66,8 @@ BEGIN
 			, @inPostIP
 			, GETDATE()
 			, 4
-			, 'Parámetros: 1.' + @inIdUser + ', 2.' + @inUsername + ', 3.' +
-				@inPostIP + '4.' + @inStringCajaDeTexto + '.'
+			, 'Parámetros: 1.' + CONVERT(VARCHAR, @inIdUser) + ', 2.' + @inUsername + ', 3.' +
+				@inPostIP + ', 4.' + @inStringCajaDeTexto + '.'
 		)
 
 	END TRY
