@@ -1,4 +1,4 @@
-﻿USE DB_AsistenciaEmpleados
+﻿USE ControlPlanillaDB
 GO
 
 SET ANSI_NULLS ON

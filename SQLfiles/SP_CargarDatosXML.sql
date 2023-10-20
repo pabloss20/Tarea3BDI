@@ -1,9 +1,12 @@
-USE DB_AsistenciaEmpleados
+USE ControlPlanillaDB
 GO
 
 CREATE PROCEDURE [dbo].[CargarXML]
     -- Parametro de entrada
-    @inRutaXML NVARCHAR(500)
+	@inIdUser INT
+	, @inUsername VARCHAR(16)
+	, @inPostIP varchar(64)
+    , @inRutaXML NVARCHAR(500)
 AS
 BEGIN
 	BEGIN TRY
@@ -146,7 +149,25 @@ BEGIN
 				, Nombre VARCHAR(255)
 				)
 
-		/* HACER LA INSERCIÓN DE LA TABLA DE EVENTOS */
+			-- Se insertan los valores en la tabla BitacoraEventos
+			INSERT INTO dbo.BitacoraEventos
+			(
+				IdUsuario
+				, IP
+				, FechaHora
+				, IdTipoEvento
+				, Parametros
+			)
+			VALUES 
+			(
+				@inIdUser
+				, @inPostIP
+				, GETDATE()
+				, 16 /* HAY QUE REVISAR SI SE AGREGA A UN ADENDUM DE LA ESPECIF. DEL PROYECTO,
+				YA QUE NO SE ENCUENTRA PARA CARGAR DATOS DE PRUEBA*/
+				, 'Parámetros: 1.' + @inIdUser + ', 2.' + @inUsername + ', 3.' +
+					@inPostIP + '4.' + @inRutaXML + '.'
+			)
 
 		COMMIT TRANSACTION tcargarDatosPrueba
 
@@ -156,11 +177,10 @@ BEGIN
 	BEGIN CATCH
 
 		IF @@TRANCOUNT>0 BEGIN
-		ROLLBACK tcargarDatosPrueba;
+			ROLLBACK tcargarDatosPrueba;
 		END;
 
 		-- Registra el error en la tabla dbo.DBErrors
-		/*
         INSERT INTO dbo.DBErrors
         (
             UserName
@@ -174,7 +194,7 @@ BEGIN
         )
         VALUES
         (
-            @Username
+            @inUsername
           , ERROR_NUMBER()
           , ERROR_STATE()
           , ERROR_SEVERITY()
@@ -183,7 +203,7 @@ BEGIN
           , ERROR_MESSAGE()
           , GETDATE()
         )
-		*/
+
 	END CATCH
 END
 
