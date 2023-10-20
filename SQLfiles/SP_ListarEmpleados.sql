@@ -6,11 +6,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[SP_ListarEmpleados]
+ALTER PROCEDURE [dbo].[SP_ListarEmpleados]
 (
 	@inIdUser INT
 	, @inUsername VARCHAR(16)
-	, @inPostIP varchar(64)
+	, @inPostIP VARCHAR(64)
 	, @outRetorno BIT OUTPUT
 	, @outMessage VARCHAR(100) OUTPUT
 )
@@ -26,7 +26,7 @@ BEGIN
 		ORDER BY E.Nombre ASC
 
 		SET @outRetorno = 1
-		Set @outMessage = 'Mostrados todos los usuarios exitosamente.'
+		SET @outMessage = 'Mostrados todos los usuarios exitosamente.'
 
 		-- Se insertan los valores en la tabla BitacoraEventos
 		INSERT INTO dbo.BitacoraEventos
@@ -43,7 +43,7 @@ BEGIN
 			, @inPostIP
 			, GETDATE()
 			, 3 -- Según el archivo XML de datos de prueba
-			, 'Parámetros: 1.' + @inIdUser + ', 2.' + @inUsername + ', 3.' +
+			, 'Parámetros: 1.' + CONVERT(VARCHAR, @inIdUser) + ', 2.' + @inUsername + ', 3.' +
 				@inPostIP + '.'
 		)
 
