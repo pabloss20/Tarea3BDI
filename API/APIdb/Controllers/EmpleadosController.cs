@@ -1,46 +1,42 @@
-﻿using APIdb.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Data;
 using System.Data.SqlClient;
+using System.Data;
+using APIdb.Models;
 
 namespace APIdb.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FiltroNombreController : ControllerBase
+
+    public class EmpleadosController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public FiltroNombreController(IConfiguration configuration)
+        public EmpleadosController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
         [HttpPost]
-        [Route("GetByName")]
-        public IActionResult FiltroNombre([FromBody] FiltroNombre filtroNombre)
+        [Route("GetEmpleados")]
+        public IActionResult GetEmpleados([FromBody] Empleados empleados)
         {
             try
             {
-                DataTable empleadoTable = new DataTable();
-                var clientIpAddress = HttpContext.Connection.RemoteIpAddress;
-                var ip = clientIpAddress.ToString();
+                // Conexión a la base de datos
+                string sqlDatasource = _configuration.GetConnectionString("connection");
+                DataTable empleadoTable = new DataTable();  // Crear una tabla para los empleados
 
-                using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("connection")))
+                using (SqlConnection connection = new SqlConnection(sqlDatasource))
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("SP_FiltroXNombreEmpleado", connection))
+                    using (SqlCommand command = new SqlCommand("SP_ListarEmpleados", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@inIdUser", filtroNombre.inIdUser);
-                        command.Parameters.AddWithValue("@inUsername", filtroNombre.inUsername);
-                        command.Parameters.AddWithValue("@inPostIP", ip);
-                        command.Parameters.AddWithValue("@inStringCajaDeTexto", filtroNombre.inStringCajaDeTexto);
+                        command.Parameters.AddWithValue("@inIdUser", empleados.IdUser);
+                        command.Parameters.AddWithValue("@inUsername", empleados.Username);
+                        command.Parameters.AddWithValue("@inPostIP", "127.0.0.1");
 
                         SqlParameter retornoParameter = new SqlParameter("@outRetorno", SqlDbType.Bit);
                         retornoParameter.Direction = ParameterDirection.Output;
@@ -60,9 +56,9 @@ namespace APIdb.Controllers
 
                         var response = new
                         {
-                            statusCode = retorno,
-                            statusMessage = message,
-                            Articles = empleadoTable
+                            StatusCode = retorno,
+                            StatusMessage = message,
+                            Empleados = empleadoTable
                         };
 
                         return Ok(response);
