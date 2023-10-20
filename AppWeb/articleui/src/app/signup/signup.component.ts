@@ -32,27 +32,32 @@ export class SignupComponent {
     this.checkFormValidity();
   }
 
-  onSubmit() {
-    const signupData = {
-      nombre: this.nombre,
-      idDocIdentidad: this.idDocIdentidad,
-      valorDocIdentidad: this.valorDocIdentidad,
-      fechaNacimiento: this.fechaNacimiento,
-      idPuesto: this.idPuesto,
-      idDepartamento: this.idDepartamento,
-      activo: this.activo,
-      username: this.username,
-      password: this.password,
-      tipo: this.tipo,
-    };
+  registrarEmpleado() {
+    // Validar que los campos requeridos no estén vacíos
+    if (this.isRegistrationFormValid) {
+      const signupData = {
+        nombre: this.nombre,
+        idDocIdentidad: this.idDocIdentidad,
+        valorDocIdentidad: this.valorDocIdentidad,
+        fechaNacimiento: this.fechaNacimiento,
+        idPuesto: this.idPuesto,
+        idDepartamento: this.idDepartamento,
+        activo: this.activo,
+        username: this.username,
+        password: this.password,
+        tipo: this.tipo,
+      };
 
-    this.http.post<any>('http://localhost:5095/api/Signup/Signup', signupData)
-      .subscribe((response: any) => {
-        this.responseMessage = response.statusMessage;
-      }, error => {
-        console.error('Error en la solicitud HTTP:', error);
-        this.responseMessage = 'Error al registrar el usuario.';
-      });
+      this.http.post<any>('http://localhost:5095/api/Signup/Signup', signupData)
+        .subscribe((response: any) => {
+          this.responseMessage = response.statusMessage;
+        }, error => {
+          console.error('Error en la solicitud HTTP:', error);
+          this.responseMessage = 'Error al registrar el usuario.';
+        });
+    } else {
+      this.responseMessage = 'Por favor, complete todos los campos requeridos.';
+    }
   }
 
   checkFormValidity() {
