@@ -5,23 +5,14 @@
     <!-- Columna 1 -->
     <div class="col-md-6 text-start">
       <!-- Campo para el nombre del artículo -->
-      <input type="text" class="form-control mb-2" placeholder="Nombre de artículo..." [(ngModel)]="nombreArticulo" (change)="onNombreArticuloChange()">
-      <!-- Input para la cantidad de artículos -->
-      <input type="number" class="form-control mb-2" placeholder="Cantidad de artículos..." [(ngModel)]="cantidadArticulos">
-    <!-- Select para las clases -->
-    <select class="form-select mb-2" [(ngModel)]="claseSeleccionada" (change)="onClaseSeleccionadaChange($event)">
-      <option *ngFor="let clase of clases" [value]="clase.id">{{ clase.Nombre }}</option>
-    </select>
+      <input type="text" class="form-control mb-2" placeholder="Nombre de artículo..." [(ngModel)]="nombreArticulo" >
+
     <button class="btn btn-primary mb-2" (click)="refrescar()">Refrescar</button>
     </div>
     <!-- Columna 2 -->
     <div class="col-md-3 text-start">
-      <!-- Botón para activar el filtro por cantidad -->
-      <button class="btn btn-primary mb-2" (click)="onCantidadArticulosChange()" (click)="mostrarInsertar = false" (click)="mostrarActualizar = false" (click)="mostrarEliminar = false">Filtro por cantidad</button>
-
       <!-- Botón para activar la búsqueda por nombre -->
-      <button class="btn btn-primary mb-2" (click)="onNombreArticuloChange()" (click)="mostrarInsertar = false" (click)="mostrarActualizar = false" (click)="mostrarEliminar = false">Filtrar por nombre</button>
-      <button class="btn btn-primary" (click)="filtrarPorClase()" (click)="mostrarInsertar = false" (click)="mostrarActualizar = false" (click)="mostrarEliminar = false">Filtrar por clase</button>
+      <button class="btn btn-primary mb-2"  (click)="mostrarInsertar = false" (click)="mostrarActualizar = false" (click)="mostrarEliminar = false">Filtrar por nombre</button>
     </div>
   </div>
 
@@ -30,9 +21,10 @@
     <!-- Columna única -->
     <div class="col-md-12 text-start">
 <!-- Botones para abrir las ventanas -->
-<button class="btn btn-primary" (click)="mostrarInsertar = true" (click)="mostrarActualizar = false" (click)="mostrarEliminar = false">Insertar</button>
-<button class="btn btn-primary" (click)="mostrarActualizar = true" (click)="mostrarInsertar = false" (click)="mostrarEliminar = false">Actualizar</button>
-<button class="btn btn-primary" (click)="mostrarEliminar = true" (click)="mostrarEliminar = false">Eliminar</button>
+<button class="btn btn-primary" >Insertar</button>
+<button class="btn btn-primary" >Actualizar</button>
+<button class="btn btn-primary" >Eliminar</button>
+<button class="btn btn-primary">Impersonar</button>
 <button class="btn btn-primary" (click)="salir()">Salir</button>
     </div>
   </div>
@@ -69,51 +61,3 @@
   <!-- Esta parte se mostrará si mostrarParte es false -->
   <app-login></app-login>
 </ng-template>
-
-<div class="container text-center mt-5">
-  <!-- Ventana emergente de Insertar -->
-  <div *ngIf="mostrarInsertar">
-    <div>
-      <!-- Campo de selección para las clases -->
-      <!-- Select para las clases -->
-      <select class="form-select mb-2" [(ngModel)]="claseSeleccionada" (change)="onClaseSeleccionadaChange($event)">
-        <option *ngFor="let clase of clases" [value]="clase.id">{{ clase.Nombre }}</option>
-      </select>
-    </div>
-    <div>
-      <label for="codigo">Código:</label>
-      <input type="text" id="codigo" [(ngModel)]="insertar.inCodigo" name="codigo">
-    </div>
-    <div>
-      <label for="nombre">Nombre:</label>
-      <input type="text" id="nombre" [(ngModel)]="insertar.inNombre" name="nombre">
-    </div>
-    <div>
-      <label for="precio">Precio:</label>
-      <input type="number" id="precio" [(ngModel)]="insertar.inPrecio" name="precio" step="0.01">
-    </div>
-    <button class="btn btn-primary" (click)="insertarArticulo()" [disabled]="!isFormValid()">Insertar Artículo</button>
-
-    <!-- Mostrar la respuesta del servidor -->
-    <p *ngIf="respuestaServidor">{{ respuestaServidor }}</p>
-    <button class="btn btn-danger" (click)="mostrarInsertar = false">Cerrar</button>
-  </div>
-</div>
-
-
-<div class="container text-center mt-5">
-<!-- Ventana emergente de Actualizar -->
-<div *ngIf="mostrarActualizar">
-  <h2>Actualizar Artículo</h2>
-  <!-- Contenido de la ventana de Actualizar -->
-  <button class="btn btn-danger" (click)="mostrarActualizar = false">Cerrar</button>
-</div>
-</div>
-<div class="container text-center mt-5">
-<!-- Ventana emergente de Eliminar -->
-<div *ngIf="mostrarEliminar">
-  <h2>Eliminar Artículo</h2>
-  <!-- Contenido de la ventana de Eliminar -->
-  <button class="btn btn-danger" (click)="mostrarEliminar = false">Cerrar</button>
-</div>
-</div>

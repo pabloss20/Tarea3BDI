@@ -1,90 +1,85 @@
-
 <div class="signup-container">
   <div class="form-wrapper">
     <h2>Registro de Empleado</h2>
-    <form #signupForm="ngForm">
-      <div class="signup-container">
-        <div class="form-wrapper">
-          <h2>Registro de Empleado</h2>
-          <form #signupForm="ngForm">
-            <div class="form-group">
-              <label for="nombre">Nombre</label>
-              <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
-            </div>
-            <div class="form-group">
-              <label for="idDocIdentidad">Tipo de Documento de Identidad</label>
-              <select id="idDocIdentidad" name="idDocIdentidad" [(ngModel)]="idDocIdentidad" required>
-                <option value="1">Cedula Nacional</option>
-                <option value="2">Cedula Residente</option>
-                <option value="3">Pasaporte</option>
-                <option value="4">Cedula Juridica</option>
-                <option value="5">Permiso de Trabajo</option>
-                <option value="6">Cedula Extranjera</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="valorDocIdentidad">Número de Documento de Identidad</label>
-              <input type="text" id="valorDocIdentidad" name="valorDocIdentidad" [(ngModel)]="valorDocIdentidad" required>
-            </div>
-
-            <div class="form-group">
-              <label for="fechaNacimiento">Fecha de Nacimiento</label>
-              <input type="date" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="fechaNacimiento" required>
-            </div>
-
-            <div class="form-group">
-              <label for="idPuesto">Puesto</label>
-              <select id="idPuesto" name="idPuesto" [(ngModel)]="idPuesto" required>
-                <!-- Opciones para Puesto (Adapta según tus necesidades) -->
-                <option value="1">Electricista</option>
-                <option value="2">Auxiliar de Laboratorio</option>
-                <option value="3">Operador de Máquina</option>
-                <option value="4">Técnico de Mantenimiento</option>
-                <option value="5">Ingeniero de Software</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="idDepartamento">Departamento</label>
-              <select id="idDepartamento" name="idDepartamento" [(ngModel)]="idDepartamento" required>
-                <!-- Opciones para Departamento (Adapta según tus necesidades) -->
-                <option value="1">Enlaminado</option>
-                <option value="2">Laboratori</option>
-                <option value="3">Bodega de materiales</option>
-                <option value="4">Bodega de producto terminado</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="activo">Activo</label>
-              <input type="text" id="activo" name="activo" [(ngModel)]="activo" required>
-            </div>
-
-            <div class="form-group">
-              <label for="username">Nombre de Usuario</label>
-              <input type="text" id="username" name="username" [(ngModel)]="username" required>
-            </div>
-
-            <div class="form-group">
-              <label for="password">Contraseña</label>
-              <input type="password" id="password" name="password" [(ngModel)]="password" required>
-            </div>
-
-            <div class="form-group">
-              <label for="tipo">Tipo</label>
-              <select id="tipo" name="tipo" [(ngModel)]="tipo" required>
-                <option value="1">Administrador</option>
-                <option value="2">Empleado</option>
-              </select>
-            </div>
-          </form>
-        </div>
+    <form #signupForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" name="nombre" [(ngModel)]="nombre" required>
       </div>
+
+      <div class="form-group">
+        <label for="idDocIdentidad">Tipo de Documento de Identidad</label>
+        <select id="idDocIdentidad" name="idDocIdentidad" [(ngModel)]="idDocIdentidad" required>
+          <option value="1">Cedula Nacional</option>
+          <option value="2">Cedula Residente</option>
+          <option value="3">Pasaporte</option>
+          <option value="4">Cedula Juridica</option>
+          <option value="5">Permiso de Trabajo</option>
+          <option value="6">Cedula Extranjera</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="valorDocIdentidad">Número de Documento de Identidad</label>
+        <input type="text" id="valorDocIdentidad" name="valorDocIdentidad" [(ngModel)]="valorDocIdentidad" required>
+      </div>
+
+      <div class="form-group">
+        <label for="fechaNacimiento">Fecha de Nacimiento</label>
+        <input type="date" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="fechaNacimiento" required>
+      </div>
+
+      <div class="form-group">
+        <label for="idPuesto">Puesto</label>
+        <select id="idPuesto" name="idPuesto" [(ngModel)]="idPuesto" required>
+          <!-- Opciones para Puesto (Adapta según tus necesidades) -->
+          <option value="1">Electricista</option>
+          <option value="2">Auxiliar de Laboratorio</option>
+          <option value="3">Operador de Máquina</option>
+          <option value="4">Técnico de Mantenimiento</option>
+          <option value="5">Ingeniero de Software</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="idDepartamento">Departamento</label>
+        <select id="idDepartamento" name="idDepartamento" [(ngModel)]="idDepartamento" required>
+          <!-- Opciones para Departamento (Adapta según tus necesidades) -->
+          <option value="1">Enlaminado</option>
+          <option value="2">Laboratorio</option>
+          <option value="3">Bodega de materiales</option>
+          <option value="4">Bodega de producto terminado</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="activo">Activo</label>
+        <input type="number" id="activo" name="activo" [(ngModel)]="activo" required>
+      </div>
+
+      <div class="form-group">
+        <label for="username">Nombre de Usuario</label>
+        <input type="text" id="username" name="username" [(ngModel)]="username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" required>
+      </div>
+
+      <div class="form-group">
+        <label for="tipo">Tipo</label>
+        <select id="tipo" name="tipo" [(ngModel)]="tipo" required>
+          <option value="1">Administrador</option>
+          <option value="2">Empleado</option>
+        </select>
+      </div>
+
       <div class="button-group">
-        <button type="submit" (click)="registrarEmpleado()">Registrar</button>
+        <button type="submit">Registrar</button>
         <button (click)="showLogin()">Regresar</button>
       </div>
     </form>
+    <p>{{ responseMessage }}</p>
   </div>
 </div>

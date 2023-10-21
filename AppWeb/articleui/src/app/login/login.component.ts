@@ -18,6 +18,8 @@ export class LoginComponent {
   mostrarBoton: boolean = false;
   mostrarParte: boolean = true;
 
+  Tipo: string = "";
+
   @Output() showSignupEvent = new EventEmitter<void>();
 
   showSignup() {
@@ -42,26 +44,26 @@ export class LoginComponent {
       Password: this.password,
     };
 
-// Realiza la solicitud HTTP al servidor
-this.http.post<any>('http://localhost:5095/api/Login/Login', loginData)
-  .subscribe((response: any) => {
-    this.responseMessage = response.statusMessage;
-    this.showDialog = true;
+    // Realiza la solicitud HTTP al servidor
+    this.http.post<any>('http://localhost:5095/api/Login/Login', loginData)
+      .subscribe((response: any) => {
+        this.responseMessage = response.statusMessage;
+        this.showDialog = true;
+        this.Tipo = response.Tipo;  // Asigna el valor de 'Tipo' desde la respuesta
 
-    if (response.statusMessage === 'Usuario válido') {
-      this.mostrarBoton = true;
-      this.showDialog = false;
-      this.mostrarParte = false;
-      this.login();
-    } else {
-      this.mostrarBoton = false;
-    }
-  }, error => {
-    console.error('Error en la solicitud HTTP:', error);
-    this.responseMessage = 'Error al iniciar sesión.';
-    this.showDialog = true;
-  });
-
+        if (response.Tipo === 1) {
+          this.mostrarBoton = true;
+          this.showDialog = false;
+          this.mostrarParte = false;
+          this.login();
+        } else {
+          this.mostrarBoton = false;
+        }
+      }, error => {
+        console.error('Error en la solicitud HTTP:', error);
+        this.responseMessage = 'Error al iniciar sesión.';
+        this.showDialog = true;
+      });
   }
 
   closeDialog() {
@@ -83,7 +85,7 @@ this.http.post<any>('http://localhost:5095/api/Login/Login', loginData)
 
   login() {
     // Lógica de inicio de sesión
-    const usuario = this.username
+    const usuario = this.username;
     this.dataService.usuario = usuario; // Establece el usuario en el servicio
   }
 }

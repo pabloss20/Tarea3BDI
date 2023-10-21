@@ -7,7 +7,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  // Declarar propiedades para los nuevos campos del formulario
   nombre: string = "";
   idDocIdentidad: number = 1;
   valorDocIdentidad: string = "";
@@ -17,7 +16,7 @@ export class SignupComponent {
   activo: number = 1;
   username: string = "";
   password: string = "";
-  tipo: number = 2; // 2 para empleado por defecto
+  tipo: number = 2;
   responseMessage: string = "";
   isRegistrationFormValid: boolean = false;
 
@@ -28,13 +27,11 @@ export class SignupComponent {
   }
 
   constructor(private http: HttpClient) {
-    // Llama a checkFormValidity al iniciar
     this.checkFormValidity();
   }
 
-  registrarEmpleado() {
-    // Validar que los campos requeridos no estén vacíos
-    if (this.isRegistrationFormValid) {
+  onSubmit() {
+
       const signupData = {
         nombre: this.nombre,
         idDocIdentidad: this.idDocIdentidad,
@@ -51,17 +48,16 @@ export class SignupComponent {
       this.http.post<any>('http://localhost:5095/api/Signup/Signup', signupData)
         .subscribe((response: any) => {
           this.responseMessage = response.statusMessage;
+          if (response.statusCode === true) {
+            this.clearFormFields();
+          }
         }, error => {
           console.error('Error en la solicitud HTTP:', error);
           this.responseMessage = 'Error al registrar el usuario.';
         });
-    } else {
-      this.responseMessage = 'Por favor, complete todos los campos requeridos.';
-    }
   }
 
   checkFormValidity() {
-    // Verifica que los campos requeridos estén completos
     this.isRegistrationFormValid =
       this.nombre.trim() !== '' &&
       this.valorDocIdentidad.trim() !== '' &&
@@ -70,24 +66,11 @@ export class SignupComponent {
       this.password.trim() !== '';
   }
 
-  // Llama a checkFormValidity cada vez que cambie el valor de los campos requeridos
-  onNombreChange() {
-    this.checkFormValidity();
-  }
-
-  onValorDocIdentidadChange() {
-    this.checkFormValidity();
-  }
-
-  onFechaNacimientoChange() {
-    this.checkFormValidity();
-  }
-
-  onUsernameChange() {
-    this.checkFormValidity();
-  }
-
-  onPasswordChange() {
-    this.checkFormValidity();
+  clearFormFields() {
+    this.nombre = "";
+    this.valorDocIdentidad = "";
+    this.fechaNacimiento = "";
+    this.username = "";
+    this.password = "";
   }
 }
