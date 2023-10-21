@@ -1,15 +1,18 @@
 USE ControlPlanillaDB
 GO
 
-CREATE PROCEDURE [dbo].[CargarXML]
+ALTER PROCEDURE [dbo].[SP_CargarDatosXML]
     -- Parametro de entrada
 	@inIdUser INT
 	, @inUsername VARCHAR(16)
-	, @inPostIP varchar(64)
+	, @inPostIP VARCHAR(64)
     , @inRutaXML NVARCHAR(500)
+	, @outRetorno BIT OUTPUT
+	, @outMessage VARCHAR(100) OUTPUT
 AS
 BEGIN
 	BEGIN TRY
+	/*
 		DECLARE @Datos xml/*Declaramos la variable Datos como un tipo XML*/
 
 		DECLARE @outDatos xml -- parametro de salida del sql dinamico
@@ -18,6 +21,27 @@ BEGIN
 		DECLARE @Comando NVARCHAR(500)= 'SELECT @Datos = D FROM OPENROWSET (BULK '  + CHAR(39) + @inRutaXML + CHAR(39) + ', SINGLE_BLOB) AS Datos(D)' -- comando que va a ejecutar el sql dinamico
 
 		DECLARE @Parametros NVARCHAR(500)
+
+		SET @Parametros = N'@Datos xml OUTPUT' --parametros del sql dinamico
+
+		EXECUTE sp_executesql @Comando, @Parametros, @Datos = @outDatos OUTPUT -- ejecutamos el comando que hicimos dinamicamente
+
+		SET @Datos = @outDatos -- le damos el parametro de salida del sql dinamico a la variable para el resto del procedure
+    
+		DECLARE @hdoc int /*Creamos hdoc que va a ser un identificador*/
+    
+		EXEC sp_xml_preparedocument @hdoc OUTPUT, @Datos/*Toma el identificador y a la variable con el documento y las asocia*/
+		*/
+
+		DECLARE @Datos xml/*Declaramos la variable Datos como un tipo XML*/
+
+		DECLARE @outDatos xml -- parametro de salida del sql dinamico
+
+		 -- Para cargar el archivo con una variable, CHAR(39) son comillas simples
+		DECLARE @Comando NVARCHAR(500)= 'SELECT @Datos = D FROM OPENROWSET (BULK '  + CHAR(39) + @inRutaXML + CHAR(39) + ', SINGLE_BLOB) AS Datos(D)' -- comando que va a ejecutar el sql dinamico
+
+		DECLARE @Parametros NVARCHAR(500)
+
 		SET @Parametros = N'@Datos xml OUTPUT' --parametros del sql dinamico
 
 		EXECUTE sp_executesql @Comando, @Parametros, @Datos = @outDatos OUTPUT -- ejecutamos el comando que hicimos dinamicamente
@@ -123,7 +147,7 @@ BEGIN
 				)
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA Usuarios
-			INSERT INTO [dbo].[TipoDeduccion]
+			INSERT INTO [dbo].[Usuarios]
 					   ([Username]
 					   , [Password]
 					   , [Tipo])
@@ -135,13 +159,10 @@ BEGIN
 				, tipo INT
 				)
 
-			--- SE INSERTAN LOS DATOS EN LA TABLA ###############FALTAN LOS ULTIMOS DATOS DEL XML, <TiposdeEvento>
-			INSERT INTO [dbo].[]
-					   ([]
-					   , []
-					   , []
-					   , []
-					   , [])
+			--- SE INSERTAN LOS DATOS EN LA TABLA TiposdeEvento
+			INSERT INTO [dbo].[TiposdeEvento]
+					   ([Id]
+					   , [Nombre])
 			SELECT *
 			FROM OPENXML (@hdoc, '/Catalogos/TiposdeEvento/TipoEvento' , 1)
 			WITH(
@@ -173,11 +194,15 @@ BEGIN
 
 		EXEC sp_xml_removedocument @hdoc/*Remueve el documento XML de la memoria*/
 
+		SET @outRetorno = 1
+		Set @outMessage = 'Agregados los datos de prueba exitosamente.'
+
 	END TRY
 	BEGIN CATCH
 
-		IF @@TRANCOUNT>0 BEGIN
-			ROLLBACK tcargarDatosPrueba;
+		IF @@TRANCOUNT>0
+		BEGIN
+			ROLLBACK TRANSACTION tcargarDatosPrueba;
 		END;
 
 		-- Registra el error en la tabla dbo.DBErrors
@@ -204,8 +229,15 @@ BEGIN
           , GETDATE()
         )
 
+		EXEC sp_xml_removedocument @hdoc/*Remueve el documento XML de la memoria*/
+
+		SET @outRetorno = 0
+		Set @outMessage = 'Hubo un error al agregar los datos de prueba'
+
 	END CATCH
+	
+	SET NOCOUNT OFF;
+
 END
 
-EXEC sp_xml_removedocument @hdoc/*Remueve el documento XML de la memoria*/
 
