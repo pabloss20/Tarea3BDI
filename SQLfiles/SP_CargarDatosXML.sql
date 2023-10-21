@@ -12,7 +12,7 @@ ALTER PROCEDURE [dbo].[SP_CargarDatosXML]
 AS
 BEGIN
 	BEGIN TRY
-	/*
+	
 		DECLARE @Datos xml/*Declaramos la variable Datos como un tipo XML*/
 
 		DECLARE @outDatos xml -- parametro de salida del sql dinamico
@@ -31,27 +31,7 @@ BEGIN
 		DECLARE @hdoc int /*Creamos hdoc que va a ser un identificador*/
     
 		EXEC sp_xml_preparedocument @hdoc OUTPUT, @Datos/*Toma el identificador y a la variable con el documento y las asocia*/
-		*/
-
-		DECLARE @Datos xml/*Declaramos la variable Datos como un tipo XML*/
-
-		DECLARE @outDatos xml -- parametro de salida del sql dinamico
-
-		 -- Para cargar el archivo con una variable, CHAR(39) son comillas simples
-		DECLARE @Comando NVARCHAR(500)= 'SELECT @Datos = D FROM OPENROWSET (BULK '  + CHAR(39) + @inRutaXML + CHAR(39) + ', SINGLE_BLOB) AS Datos(D)' -- comando que va a ejecutar el sql dinamico
-
-		DECLARE @Parametros NVARCHAR(500)
-
-		SET @Parametros = N'@Datos xml OUTPUT' --parametros del sql dinamico
-
-		EXECUTE sp_executesql @Comando, @Parametros, @Datos = @outDatos OUTPUT -- ejecutamos el comando que hicimos dinamicamente
-
-		SET @Datos = @outDatos -- le damos el parametro de salida del sql dinamico a la variable para el resto del procedure
-    
-		DECLARE @hdoc int /*Creamos hdoc que va a ser un identificador*/
-    
-		EXEC sp_xml_preparedocument @hdoc OUTPUT, @Datos/*Toma el identificador y a la variable con el documento y las asocia*/
-
+		
 		BEGIN TRANSACTION tcargarDatosPrueba
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA TipoDocumentoIdentidad
