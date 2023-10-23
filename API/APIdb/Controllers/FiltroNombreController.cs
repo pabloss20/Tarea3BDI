@@ -37,8 +37,8 @@ namespace APIdb.Controllers
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@inIdUser", filtroNombre.inIdUser);
-                        command.Parameters.AddWithValue("@inUsername", filtroNombre.inUsername);
+                        command.Parameters.AddWithValue("@inIdUser", 5);
+                        command.Parameters.AddWithValue("@inUsername", "perezjuan12");
                         command.Parameters.AddWithValue("@inPostIP", ip);
                         command.Parameters.AddWithValue("@inStringCajaDeTexto", filtroNombre.inStringCajaDeTexto);
 

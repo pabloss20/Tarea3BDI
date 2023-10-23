@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../data.service';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { FiltroNombreService } from '../filtro-nombre.service';
 
 @Component({
   selector: 'app-articulos',
@@ -10,6 +11,9 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./articulos.component.css']
 })
 export class ArticulosComponent implements OnInit {
+
+  private baseUrl = 'http://localhost:5095/api/FiltroNombre'; // Reemplaza con la URL correcta de tu API
+
   usuario: string = "";
   clases: any[] = [];
   articulos: any[] = [];
@@ -18,6 +22,12 @@ export class ArticulosComponent implements OnInit {
   cantidadArticulos: number = 0;
   nombreArticulo: string = "";
   mostrarParte: boolean = true;
+
+
+  Empleados: any[] = [];
+  empleadoSeleccionado: any = null;
+  impersonarHabilitado: boolean = false;
+
 
   mostrarInsertar = false;
   mostrarActualizar = false;
@@ -38,11 +48,21 @@ export class ArticulosComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public dataService: DataService,
-    private http: HttpClient
+    private http: HttpClient,
+    private filtroNombreService: FiltroNombreService,
   ) {}
 
   ngOnInit() {
+    this.http.post<any>('http://localhost:5095/GetEmpleados', {}).subscribe(
+      data => {
+        this.Empleados = data.Empleados;
+      },
+      error => {
+        console.error('Error en la solicitud HTTP:', error);
+      }
+    );
 
+    console.log(this.Empleados.length)
   }
 
   salir(){
@@ -53,10 +73,6 @@ export class ArticulosComponent implements OnInit {
   onClaseSeleccionadaChange(event: any) {
     this.claseSeleccionada = event.target.value;
   }
-
-
-
-
 
   limpiar()
   {
@@ -78,15 +94,6 @@ camposLlenos(): boolean {
   );
 }
 
-// Función para buscar un artículo por código
-buscarArticuloPorCodigo() {
-  if (this.codigoArticulo.trim() === '') {
-    // Si el campo de código está vacío, no realizar la búsqueda
-    this.articuloEncontrado = null;
-    this.respuestaServidor = 'Ingresa un código de artículo válido.';
-    return;
-  }
-}
 mostrarInsertarBoton = true;
 // Otras propiedades y métodos de tu componente...
 
@@ -98,4 +105,26 @@ isFormValid(): boolean {
   );
 }
 refrescar(){this.ngOnInit()}
+
+  // Método para manejar la selección de un empleado
+  seleccionarEmpleado(empleado: any) {
+    if (this.empleadoSeleccionado === empleado) {
+      // Si se vuelve a hacer clic en el mismo empleado, deshabilita el impersonar
+      this.empleadoSeleccionado = null;
+      this.impersonarHabilitado = false;
+    } else {
+      // Si se hace clic en un nuevo empleado, habilita el impersonar
+      this.empleadoSeleccionado = empleado;
+      this.impersonarHabilitado = true;
+    }
+  }
+  filtrarPorNombre() {
+    if (this.nombreArticulo.trim() !== '') {
+      const filtro = { inStringCajaDeTexto: this.nombreArticulo };
+      this.http.post('http://localhost:5095/api/FiltroNombre/GetByName', filtro)
+        .subscribe((data: any) => {
+          this.Empleados = data.Articles;
+        });
+    }
+  }
 }

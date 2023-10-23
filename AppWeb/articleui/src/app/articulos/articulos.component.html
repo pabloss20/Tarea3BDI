@@ -1,60 +1,70 @@
 <div *ngIf="mostrarParte; else parteNoMostrar">
-<div class="container text-center mt-5">
-  <!-- Fila 1 -->
-  <div class="row mb-3">
-    <!-- Columna 1 -->
-    <div class="col-md-6 text-start">
-      <!-- Campo para el nombre del artículo -->
-      <input type="text" class="form-control mb-2" placeholder="Nombre de artículo..." [(ngModel)]="nombreArticulo" >
+  <div class="container text-center mt-5">
+    <!-- Fila 1 -->
+    <div class="row mb-3">
+      <!-- Columna 1 -->
+      <div class="col-md-6 text-start">
+        <!-- Campo para el nombre del empleado -->
+        <input type="text" class="form-control mb-2" placeholder="Nombre del empleado..." [(ngModel)]="nombreArticulo">
+        <button class="btn btn-primary mb-2" (click)="refrescar()">Refrescar</button>
+        <button class="btn btn-primary mb-2" (click)="filtrarPorNombre()">Filtrar por nombre</button> <!-- Botón para filtrar -->
+      </div>
 
-    <button class="btn btn-primary mb-2" (click)="refrescar()">Refrescar</button>
+      <!-- Columna 2 -->
+      <div class="col-md-3 text-start">
+        <!-- Botón para activar la búsqueda por nombre -->
+        <button class="btn btn-primary mb-2" (click)="mostrarInsertar = false; mostrarActualizar = false; mostrarEliminar = false">Filtrar por nombre</button>
+      </div>
     </div>
-    <!-- Columna 2 -->
-    <div class="col-md-3 text-start">
-      <!-- Botón para activar la búsqueda por nombre -->
-      <button class="btn btn-primary mb-2"  (click)="mostrarInsertar = false" (click)="mostrarActualizar = false" (click)="mostrarEliminar = false">Filtrar por nombre</button>
+
+    <!-- Fila 2 -->
+    <div class="row mb-3">
+      <!-- Columna única -->
+      <div class="col-md-12 text-start">
+        <!-- Botones para abrir las ventanas -->
+        <button class="btn btn-primary" (click)="mostrarInsertar = true; mostrarActualizar = false; mostrarEliminar = false">Insertar</button>
+        <button class="btn btn-primary" (click)="mostrarInsertar = false; mostrarActualizar = true; mostrarEliminar = false">Actualizar</button>
+        <button class="btn btn-primary" (click)="mostrarInsertar = false; mostrarActualizar = false; mostrarEliminar = true">Eliminar</button>
+        <button class="btn btn-primary" (click)="salir()">Salir</button>
+      </div>
+    </div>
+
+    <!-- Fila 3 (tabla de empleados) -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Puesto</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let empleado of Empleados">
+                  <td (click)="seleccionarEmpleado(empleado)">
+                    {{ empleado.Nombre }}
+                  </td>
+                  <td>{{ empleado.Nombre1 }}</td>
+                  <td>
+                    <button
+                      class="btn btn-primary"
+                      [disabled]="!impersonarHabilitado || empleado !== empleadoSeleccionado"
+                      (click)="salir()"
+                    >
+                      Impersonar
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Fila 2 -->
-  <div class="row mb-3">
-    <!-- Columna única -->
-    <div class="col-md-12 text-start">
-<!-- Botones para abrir las ventanas -->
-<button class="btn btn-primary" >Insertar</button>
-<button class="btn btn-primary" >Actualizar</button>
-<button class="btn btn-primary" >Eliminar</button>
-<button class="btn btn-primary">Impersonar</button>
-<button class="btn btn-primary" (click)="salir()">Salir</button>
-    </div>
-  </div>
-
-<!-- Fila 3 -->
-<div class="row">
-  <div class="col-md-12">
-    <table class="table table-bordered text-start">
-      <thead>
-        <tr>
-          <th>Código</th>
-          <th>Nombre</th>
-          <th>Precio</th>
-          <th *ngIf="mostrarCampoClase">Clase</th>
-          <th *ngIf="!mostrarCampoClase">Nombre de Clase</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let articulo of articulos">
-          <td>{{ articulo.Codigo }}</td>
-          <td>{{ articulo.Nombre }}</td>
-          <td>{{ articulo.Precio }}</td>
-          <td *ngIf="mostrarCampoClase">{{ articulo.Clase }}</td>
-          <td *ngIf="!mostrarCampoClase">{{ articulo.NombreClase }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-</div>
 </div>
 
 <ng-template #parteNoMostrar>

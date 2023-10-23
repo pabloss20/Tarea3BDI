@@ -34,8 +34,8 @@ namespace APIdb.Controllers
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@inIdUser", empleados.IdUser);
-                        command.Parameters.AddWithValue("@inUsername", empleados.Username);
+                        command.Parameters.AddWithValue("@inIdUser", 5);
+                        command.Parameters.AddWithValue("@inUsername", "luis23");
                         command.Parameters.AddWithValue("@inPostIP", "127.0.0.1");
 
                         SqlParameter retornoParameter = new SqlParameter("@outRetorno", SqlDbType.Bit);
