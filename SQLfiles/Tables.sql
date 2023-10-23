@@ -178,3 +178,7 @@ ALTER TABLE MesPlanilla ADD FOREIGN KEY (IdEmpleado) REFERENCES Empleados(Id);
 ALTER TABLE SemanaPlanilla ADD FOREIGN KEY (IdEmpleado) REFERENCES Empleados(Id);
 ALTER TABLE DeduccionesXEmpleadoxMes ADD FOREIGN KEY (IdEmpleado) REFERENCES Empleados(Id);
 ALTER TABLE DeduccionesXEmpleadoxMes ADD FOREIGN KEY (IdTipoDeduccion) REFERENCES TipoDeduccion(Id);
+
+-- Índices únicos
+CREATE UNIQUE INDEX idxValorDocumentoIdentidadUnico
+ON Empleados (ValorDocIdentidad);

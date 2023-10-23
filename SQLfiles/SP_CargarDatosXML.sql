@@ -11,6 +11,7 @@ ALTER PROCEDURE [dbo].[SP_CargarDatosXML]
 	, @outMessage VARCHAR(100) OUTPUT
 AS
 BEGIN
+/*
 	BEGIN TRY
 	
 		DECLARE @Datos xml/*Declaramos la variable Datos como un tipo XML*/
@@ -217,6 +218,12 @@ BEGIN
 	END CATCH
 	
 	SET NOCOUNT OFF;
+	*/
+
+	DECLARE @xmlData xml
+
+	SET @xmlData = (SELECT * FROM OPENROWSET(BULk 'C:\Users\Usuario\Downloads\Catalogos2.xml', SINGLE_BLOB) AS datos);
+
 
 END
 
