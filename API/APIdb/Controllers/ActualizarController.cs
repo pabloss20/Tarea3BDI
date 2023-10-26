@@ -2,89 +2,68 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace APIdb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ActualizarController : ControllerBase
+    public class EmpleadoController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public ActualizarController(IConfiguration configuration)
+        public EmpleadoController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        [HttpPost]
-        [Route("UpdateArticle")]
-        public JsonResult ActualizarArticulo([FromBody] Actualizar actualizar)
+        [HttpPut("EditarEmpleado")]
+        public IActionResult EditarEmpleado([FromBody] Empleado empleado)
         {
-            var clientIpAddress = HttpContext.Connection.RemoteIpAddress;
-            var ip = clientIpAddress.ToString();
-
-            // Variables para capturar el resultado de la actualización
-            bool actualizacionExitosa = false;
-            string mensajeActualizacion = string.Empty;
-
             try
             {
-                // Crear la conexión a la base de datos
                 using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("connection")))
                 {
                     connection.Open();
 
-                    // Crear el comando para ejecutar el procedimiento almacenado
-                    using (SqlCommand command = new SqlCommand("ActualizarArticulo", connection))
+                    using (SqlCommand command = new SqlCommand("EditarEmpleado", connection))
                     {
-                        command.CommandType = System.Data.CommandType.StoredProcedure;
+                        command.CommandType = CommandType.StoredProcedure;
 
-                        // Configurar los parámetros del procedimiento almacenado
-                        command.Parameters.AddWithValue("@Username", actualizar.Username);
-                        command.Parameters.AddWithValue("@PostIP", ip);
-                        command.Parameters.AddWithValue("@inIdClaseArticulo", actualizar.IdClaseArticulo);
-                        command.Parameters.AddWithValue("@anteriorIdClase", actualizar.AnteriorIdClase);
-                        command.Parameters.AddWithValue("@idArticulo", actualizar.IdArticulo);
-                        command.Parameters.AddWithValue("@inCodigo", actualizar.CodigoNuevo);
-                        command.Parameters.AddWithValue("@anteriorCodigo", actualizar.CodigoAnterior);
-                        command.Parameters.AddWithValue("@inNombre", actualizar.NombreNuevo);
-                        command.Parameters.AddWithValue("@anteriorNombre", actualizar.NombreAnterior);
-                        command.Parameters.AddWithValue("@inPrecio", actualizar.Precio);
+                        // Parámetros de entrada
+                        command.Parameters.Add(new SqlParameter("@Id", SqlDbType.Int)).Value = empleado.Id;
+                        command.Parameters.Add(new SqlParameter("@Nombre", SqlDbType.VarChar, 255)).Value = empleado.Nombre;
+                        command.Parameters.Add(new SqlParameter("@TipoDocIdentidadId", SqlDbType.Int)).Value = empleado.TipoDocIdentidadId;
+                        command.Parameters.Add(new SqlParameter("@ValorDocIdentidad", SqlDbType.VarChar, 50)).Value = empleado.ValorDocIdentidad;
+                        command.Parameters.Add(new SqlParameter("@FechaNacimiento", SqlDbType.Date)).Value = empleado.FechaNacimiento;
+                        command.Parameters.Add(new SqlParameter("@PuestoId", SqlDbType.Int)).Value = empleado.PuestoId;
+                        command.Parameters.Add(new SqlParameter("@DepartamentoId", SqlDbType.Int)).Value = empleado.DepartamentoId;
 
                         // Parámetros de salida
-                        SqlParameter outRegistrado = new SqlParameter("@outRegistrado", System.Data.SqlDbType.Bit);
-                        outRegistrado.Direction = System.Data.ParameterDirection.Output;
-                        command.Parameters.Add(outRegistrado);
+                        command.Parameters.Add(new SqlParameter("@Resultado", SqlDbType.Bit)).Direction = ParameterDirection.Output;
+                        command.Parameters.Add(new SqlParameter("@Mensaje", SqlDbType.VarChar, -1)).Direction = ParameterDirection.Output;
 
-                        SqlParameter outMessage = new SqlParameter("@outMessage", System.Data.SqlDbType.VarChar, 100);
-                        outMessage.Direction = System.Data.ParameterDirection.Output;
-                        command.Parameters.Add(outMessage);
-
-                        // Ejecutar el procedimiento almacenado
                         command.ExecuteNonQuery();
 
-                        // Obtener los valores de los parámetros de salida
-                        actualizacionExitosa = (bool)outRegistrado.Value;
-                        mensajeActualizacion = outMessage.Value.ToString();
+                        bool resultado = (bool)command.Parameters["@Resultado"].Value;
+                        string mensaje = command.Parameters["@Mensaje"].Value.ToString();
+
+                        if (resultado)
+                        {
+                            return Ok(new { Mensaje = mensaje });
+                        }
+                        else
+                        {
+                            return BadRequest(new { Mensaje = mensaje });
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Manejar cualquier excepción que pueda ocurrir durante la actualización
-                actualizacionExitosa = false;
-                mensajeActualizacion = "Error durante la actualización: " + ex.Message;
+                return StatusCode(500, new { Error = ex.Message });
             }
-
-            // Crear la respuesta JSON
-            var response = new
-            {
-                StatusCode = actualizacionExitosa ? 1 : 0,
-                StatusMessage = mensajeActualizacion
-            };
-
-            return new JsonResult(response);
         }
     }
 }

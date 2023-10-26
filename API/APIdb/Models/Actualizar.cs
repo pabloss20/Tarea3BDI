@@ -1,16 +1,13 @@
 ﻿namespace APIdb.Models
 {
-    public class Actualizar
+    public class Empleado
     {
-        public string Username { get; set; }
-        public int IdClaseArticulo { get; set; }
-        public int AnteriorIdClase { get; set; }
-        public int IdArticulo { get; set; }
-        public string CodigoNuevo { get; set; }
-        public string CodigoAnterior { get; set; }
-        public string NombreNuevo { get; set; }
-        public string NombreAnterior { get; set; }
-
-        public float Precio { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+        public int TipoDocIdentidadId { get; set; }
+        public string ValorDocIdentidad { get; set; }
+        public DateTime FechaNacimiento { get; set; }
+        public int PuestoId { get; set; }
+        public int DepartamentoId { get; set; }
     }
 }
