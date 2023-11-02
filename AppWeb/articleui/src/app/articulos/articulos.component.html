@@ -1,71 +1,130 @@
 <div *ngIf="mostrarParte; else parteNoMostrar">
   <div class="container text-center mt-5">
-    <!-- Fila 1 -->
-    <div class="row mb-3">
-      <!-- Columna 1 -->
-      <div class="col-md-6 text-start">
-        <!-- Campo para el nombre del empleado -->
-        <input type="text" class="form-control mb-2" placeholder="Nombre del empleado..." [(ngModel)]="nombreArticulo">
-        <button class="btn btn-primary mb-2" (click)="refrescar()">Refrescar</button>
-        <button class="btn btn-primary mb-2" (click)="filtrarPorNombre()">Filtrar por nombre</button> <!-- Botón para filtrar -->
-      </div>
+    <!-- Resto de tu contenido aquí -->
+    <div *ngIf="mostrarComponenteEmp">
+      <div class="container text-center mt-5">
+        <!-- Fila 1 -->
+        <div class="row mb-3">
+          <!-- Columna 1 -->
+          <div class="col-md-6 text-start">
+            <!-- Campo para el nombre del empleado -->
+            <input type="text" class="form-control mb-2" placeholder="Nombre del empleado..." [(ngModel)]="nombreArticulo">
+            <button class="btn btn-primary mb-2" (click)="refrescar()">Refrescar</button>
+            <button class="btn btn-primary mb-2" (click)="filtrarPorNombre()">Filtrar por nombre</button> <!-- Botón para filtrar -->
+          </div>
+        </div>
 
-      <!-- Columna 2 -->
-      <div class="col-md-3 text-start">
-        <!-- Botón para activar la búsqueda por nombre -->
-        <button class="btn btn-primary mb-2" (click)="mostrarInsertar = false; mostrarActualizar = false; mostrarEliminar = false">Filtrar por nombre</button>
-      </div>
-    </div>
+        <!-- Fila 2 -->
+        <div class="row mb-3">
+          <!-- Columna única -->
+          <div class="col-md-12 text-start">
+            <!-- Botones para abrir las ventanas -->
+            <button class="btn btn-primary" (click)="mostrarInsertar = true; mostrarActualizar = false; mostrarEliminar = false">Insertar</button>
+            <button class="btn btn-primary" (click)="salir()">Salir</button>
+          </div>
+        </div>
 
-    <!-- Fila 2 -->
-    <div class="row mb-3">
-      <!-- Columna única -->
-      <div class="col-md-12 text-start">
-        <!-- Botones para abrir las ventanas -->
-        <button class="btn btn-primary" (click)="mostrarInsertar = true; mostrarActualizar = false; mostrarEliminar = false">Insertar</button>
-        <button class="btn btn-primary" (click)="mostrarInsertar = false; mostrarActualizar = true; mostrarEliminar = false">Actualizar</button>
-        <button class="btn btn-primary" (click)="mostrarInsertar = false; mostrarActualizar = false; mostrarEliminar = true">Eliminar</button>
-        <button class="btn btn-primary" (click)="salir()">Salir</button>
-      </div>
-    </div>
-
-    <!-- Fila 3 (tabla de empleados) -->
-    <div class="row">
-      <div class="col-md-12">
+        <!-- Fila 3 (tabla de empleados) -->
         <div class="row">
           <div class="col-md-12">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nombre</th>
-                  <th>Puesto</th>
-                  <th>Acción</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let empleado of Empleados">
-                  <td (click)="seleccionarEmpleado(empleado)">
-                    {{ empleado.Nombre }}
-                  </td>
-                  <td>{{ empleado.Nombre1 }}</td>
-                  <td>
-                    <button
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>Puesto</th>
+                      <th>Acción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let empleado of Empleados">
+                      <td (click)="seleccionarEmpleado(empleado)">
+                        {{ empleado.Nombre }}
+                      </td>
+                      <td>{{ empleado.Nombre1 }}</td>
+                      <td>
+                        <button
+                          class="btn btn-primary"
+                          [disabled]="!impersonarHabilitado || empleado !== empleadoSeleccionado"
+                          (click)="salir()"
+                        >
+                          Impersonar
+                        </button>
+                        <button
+                        class="btn btn-primary"
+                        [disabled]="!actualizarHabilitado || empleado !== empleadoSeleccionado"
+                        (click)="mostrarComponente3()"
+                      >
+                        Actualizar
+                      </button>
+                      <button
                       class="btn btn-primary"
-                      [disabled]="!impersonarHabilitado || empleado !== empleadoSeleccionado"
-                      (click)="salir()"
+                      [disabled]="!eliminarHabilitado || empleado !== empleadoSeleccionado"
+                      (click)="mostrarComponente2()"
                     >
-                      Impersonar
+                      Eliminar
                     </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+    <!-- Resto de tu contenido aquí -->
+    <div *ngIf="mostrarComponenteDel">
+      <div class="container text-center mt-5">
+        <button class="btn btn-primary" (click)="mostrarComponente1()">Mostrar Componente 1 (D)</button>
+      </div>
+    </div>
+
+    <div *ngIf="mostrarComponenteUpd">
+      <div class="container text-center mt-5">
+        <form (submit)="guardarEmpleado()">
+          <div class="form-group">
+            <label for="nombre">Nombre del empleado:</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="nombreEmpleado">
+          </div>
+          <div class="form-group">
+            <label for="tipoDocIdentidad">Tipo de identificación:</label>
+            <select class="form-control" id="tipoDocIdentidad" name="tipoDocIdentidad" [(ngModel)]="tipoDocIdentidadId">
+              <!-- Opciones cargadas desde un catálogo -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="valorDocIdentidad">Valor del documento de identificación:</label>
+            <input type="text" class="form-control" id="valorDocIdentidad" name="valorDocIdentidad" [(ngModel)]="valorDocIdentidad">
+          </div>
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha de nacimiento:</label>
+            <input type="date" class="form-control" id="fechaNacimiento" name="fechaNacimiento" [(ngModel)]="fechaNacimiento">
+          </div>
+          <div class="form-group">
+            <label for="puesto">Puesto del empleado:</label>
+            <select class="form-control" id="puesto" name="puesto" [(ngModel)]="puestoId">
+              <!-- Opciones cargadas desde un catálogo -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="departamento">Departamento donde trabaja:</label>
+            <select class="form-control" id="departamento" name="departamento" [(ngModel)]="departamentoId">
+              <!-- Opciones cargadas desde un catálogo -->
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </form>
+        <button class="btn btn-primary" (click)="mostrarComponente1()">Regresar</button>
+      </div>
+    </div>
+
+
 
 <ng-template #parteNoMostrar>
   <!-- Esta parte se mostrará si mostrarParte es false -->

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "rLR3f3eUbDwughmS8D1ooMj9QOWjrgzRje7df7xnamugFMjz2X+E6evSpzLdHKKJRyBHQEg3fefENCi7WYwX+g==",
+  "dgSpecHash": "D1iYuI9I+MyeZN+fjimS6SQ3vdsyDlbTnI6Z61J3j4NepHrzy7JxwbYW1yf+jtxXCR7spYjVb6oPbgtlU8cJBQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\jpsan\\Documents\\GithubRepos\\TareaFinalBDI\\Tarea3BDI\\API\\APIdb\\APIdb.csproj",
   "expectedPackageFiles": [
@@ -27,10 +27,10 @@
     "C:\\Users\\jpsan\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512",
     "C:\\Users\\jpsan\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
     "C:\\Users\\jpsan\\.nuget\\packages\\system.text.json\\7.0.3\\system.text.json.7.0.3.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.23\\microsoft.windowsdesktop.app.ref.6.0.23.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.23\\microsoft.netcore.app.ref.6.0.23.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.23\\microsoft.aspnetcore.app.ref.6.0.23.nupkg.sha512",
-    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.23\\microsoft.netcore.app.host.win-x64.6.0.23.nupkg.sha512"
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.24\\microsoft.windowsdesktop.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.24\\microsoft.netcore.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.24\\microsoft.aspnetcore.app.ref.6.0.24.nupkg.sha512",
+    "C:\\Users\\jpsan\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.24\\microsoft.netcore.app.host.win-x64.6.0.24.nupkg.sha512"
   ],
   "logs": []
 }

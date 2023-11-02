@@ -23,15 +23,30 @@ export class ArticulosComponent implements OnInit {
   nombreArticulo: string = "";
   mostrarParte: boolean = true;
 
+  // Parte de actualizar
+  nombreEmpleado: string = "";
+  tipoDocIdentidadId: number = 0;
+  valorDocIdentidad: string = "";
+  fechaNacimiento: string = "";
+  puestoId: number = 0;
+  departamentoId: number = 0;
+
 
   Empleados: any[] = [];
   empleadoSeleccionado: any = null;
   impersonarHabilitado: boolean = false;
+  actualizarHabilitado: boolean = false;
+  eliminarHabilitado: boolean = false;
 
 
   mostrarInsertar = false;
   mostrarActualizar = false;
   mostrarEliminar = false;
+
+  mostrarComponenteEmp = true; // Componente 1 visible por defecto
+  mostrarComponenteDel = false; // Componente 2 oculto por defecto
+  mostrarComponenteUpd = false; // Componente 2 oculto por defecto
+
 
     // Objeto para almacenar los datos del formulario
     insertar = {
@@ -112,10 +127,14 @@ refrescar(){this.ngOnInit()}
       // Si se vuelve a hacer clic en el mismo empleado, deshabilita el impersonar
       this.empleadoSeleccionado = null;
       this.impersonarHabilitado = false;
+      this.actualizarHabilitado = false;
+      this.eliminarHabilitado = false;
     } else {
       // Si se hace clic en un nuevo empleado, habilita el impersonar
       this.empleadoSeleccionado = empleado;
       this.impersonarHabilitado = true;
+      this.actualizarHabilitado = true;
+      this.eliminarHabilitado = true;
     }
   }
   filtrarPorNombre() {
@@ -127,4 +146,27 @@ refrescar(){this.ngOnInit()}
         });
     }
   }
+
+    // Método para mostrar Componente 1
+    mostrarComponente1() {
+      this.mostrarComponenteEmp = true;
+      this.mostrarComponenteDel = false;
+      this.mostrarComponenteUpd = false;
+    }
+
+    // Método para mostrar Componente 2
+    mostrarComponente2() {
+      this.mostrarComponenteEmp = false;
+      this.mostrarComponenteDel = true;
+      this.mostrarComponenteUpd = false;
+    }
+    // Método para mostrar Componente 2
+    mostrarComponente3() {
+      this.mostrarComponenteEmp = false;
+      this.mostrarComponenteDel = false;
+      this.mostrarComponenteUpd = true;
+        }
+
+
+  guardarEmpleado(){}
 }
