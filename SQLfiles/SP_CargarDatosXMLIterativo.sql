@@ -38,13 +38,15 @@ BEGIN
 			);
 		*/
 		-- control de que el proceso no se este corriendo 2 veces
-	
-		IF EXISTS (SELECT 1 FROM dbo.EventLog EL WHERE (EL.IdEventType=@EVENTACREDITATODOS) AND (El.EventDate=@inFechaOperacion)
-		BEGIN
-			SET @OutResult=500201     -- Proceso ya se corrio para el dia de operacion
-			RETURN;
-		END;
-	
+
+		-- Saca la infor del archivo XML
+		DECLARE @xmlData XML;
+				SET @xmlData = (
+				SELECT *
+				FROM OPENROWSET(BULK 'C:\Users\yeico\Desktop\BDTarea2\XML\Datos.xml', SINGLE_BLOB) 
+				AS xmlData
+				);
+	/*
 		INSERT @empleadosCumplen (
 			IdEmpleado
 			, SaldoActual
@@ -56,9 +58,11 @@ BEGIN
 		FROM dbo.Empleado E
 		WHERE dbo.FNCumplemes(E.FechaContratacion, @inFechaOperacion)=1;
 	
-		SELECT @hi=max(E.sec) FROM @empleadosCumplen E;
+		SELECT @hi = max(E.sec) FROM @empleadosCumplen E;
+	*/
+		SET @hi = 
 
-		BEGIN TRANSACTION tacreditaTodos
+		BEGIN TRANSACTION tinsertarDatos
 
 			WHILE (@lo<=@hi)
 			BEGIN
@@ -94,7 +98,7 @@ BEGIN
 			INSERT dbo.Eventlog (IdEventType, EventDate, Description)
 			VALUES (@EVENTACREDITATODOS, @inFechaOperacion, 'Finalizo exitosamente');
 
-		COMMIT TRANSACTION tacreditaTodos;
+		COMMIT TRANSACTION tinsertarDatos;
 
 		SELECT @outResult as outResult; 
 	END TRY

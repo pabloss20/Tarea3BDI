@@ -69,6 +69,7 @@ BEGIN
 		
 		COMMIT TRANSACTION tActualizarEmp
 
+		--Acomodar antes o despues segun como se guarde el parametros en la tabla BitacoraEventos
 		SET @outRetorno = 1
         SET @outMessage = 'Empleado actualizado exitosamente.'
 

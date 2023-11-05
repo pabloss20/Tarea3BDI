@@ -18,3 +18,5 @@ SELECT * FROM (SELECT CAST(C AS XML)
 DECLARE @xmlData xml
 
 SET @xmlData = (SELECT * FROM OPENROWSET(BULk 'C:\Users\Usuario\Downloads\Catalogos2.xml', SINGLE_BLOB) AS datos);
+
+SELECT * FROM @xmlData;
