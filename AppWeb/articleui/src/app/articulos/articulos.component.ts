@@ -12,7 +12,7 @@ import { FiltroNombreService } from '../filtro-nombre.service';
 })
 export class ArticulosComponent implements OnInit {
 
-  private baseUrl = 'http://localhost:5095/api/FiltroNombre'; // Reemplaza con la URL correcta de tu API
+  private baseUrl = 'http://localhost:5095/api/FiltroNombre';
 
   usuario: string = "";
   clases: any[] = [];
@@ -43,9 +43,9 @@ export class ArticulosComponent implements OnInit {
   mostrarActualizar = false;
   mostrarEliminar = false;
 
-  mostrarComponenteEmp = true; // Componente 1 visible por defecto
-  mostrarComponenteDel = false; // Componente 2 oculto por defecto
-  mostrarComponenteUpd = false; // Componente 2 oculto por defecto
+  mostrarComponenteEmp = true;
+  mostrarComponenteDel = false;
+  mostrarComponenteUpd = false;
 
 
     // Objeto para almacenar los datos del formulario
