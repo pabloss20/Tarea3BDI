@@ -6,7 +6,7 @@ GO
 -- Hacemos que el proceso para TODOS los empleados sea transaccional pero no todo el proceso lo es
 -- version iterativa
 
-CREATE PROCEDURE [dbo].[SP_CargarDatosXMLIterativo]
+CREATE PROCEDURE [dbo].[SP_SimulacionXML]
 	@inIdUser INT
 	, @inUsername VARCHAR(16)
 	, @inPostIP VARCHAR(64)
