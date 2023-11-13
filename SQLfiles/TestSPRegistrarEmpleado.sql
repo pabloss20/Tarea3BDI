@@ -6,15 +6,15 @@ DECLARE @Message VARCHAR(100);
 
 -- Llamar al procedimiento almacenado
 EXEC RegistrarEmpleado
-    @Nombre = 'Felipe Cruz',
+    @Nombre = 'Marta Quiros',
     @IdDocIdentidad = 1,
-    @ValorDocIdentidad = '1209834723',
-    @FechaNacimiento = '1998-09-21',
-    @IdPuesto = 3,
-    @IdDepartamento = 2,
+    @ValorDocIdentidad = '1352392',
+    @FechaNacimiento = '1999-12-21',
+    @IdPuesto = 2,
+    @IdDepartamento = 1,
     @Activo = 1,
-    @Username = 'felicr',
-    @Password = 'n3984dkf',
+    @Username = 'marqui23',
+    @Password = 'weih9ihgc',
     @Tipo = 2,  -- 2 para empleado
     @Registrado = @Registrado OUTPUT,
     @Message = @Message OUTPUT
