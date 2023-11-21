@@ -18,9 +18,11 @@ BEGIN
 	SET NOCOUNT ON;
 
 	BEGIN TRY
-	/*
+
 		DECLARE @lo INT = 1				-- variable para iterar
 			, @hi INT					-- variable para limitar la iteracion
+			;
+	/*
 			, @idEmpleado INT
 			, @SaldoActual FLOAT
 			, @TextoEmail TEXT
@@ -43,7 +45,7 @@ BEGIN
 		DECLARE @xmlData XML;
 				SET @xmlData = (
 				SELECT *
-				FROM OPENROWSET(BULK 'C:\Users\yeico\Desktop\BDTarea2\XML\Datos.xml', SINGLE_BLOB) 
+				FROM OPENROWSET(BULK 'C:\Users\Usuario\Downloads\Catalogos2.xml', SINGLE_BLOB) 
 				AS xmlData
 				);
 	/*
@@ -66,7 +68,25 @@ BEGIN
 
 			WHILE (@lo<=@hi)
 			BEGIN
-			
+				
+				INSERT INTO [dbo].[Empleados](
+					Nombre
+					, IdTipoDocIdentidad
+					, ValorDocIdentidad
+					, IdDepartamento
+					, IdPuesto
+					, Usuario
+					, Password
+					)
+				SELECT  T.Item.VALUE('@Nombre', 'VARCHAR(255)')
+					, T.Item.VALUE('@IdTipoDocumento', 'INT')
+					, T.Item.VALUE('@ValorTipoDocumento','VARCHAR(50)')
+					, T.Item.VALUE('@IdDepartamento','INT')
+					, T.Item.VALUE('IdPuesto','INT')
+					, T.Item.VALUE('@Usuario','VARCHAR()')
+					, T.Item.VALUE('@Password','VARCHAR()')
+				FROM @xmlData.nodes('Operacion/FechaOperacion/NuevosEmpleados/NuevoEmpleado') as T(Item)
+		/*
 				SELECT @idempleado=E.IdEmpleado
 					, @SaldoActual=E.SaldoActual
 					, @TextoEmail=E.TextoEmail
@@ -90,7 +110,7 @@ BEGIN
 				UPDATE dbo.Empleado (ROWLOCK)
 				SET SaldoVacaciones=@SaldoActual+@MONTOCREDITO
 				where iD=@idempleado	
-
+		*/
 				SET @lo=@lo+1;
 			
 			END;
