@@ -1,7 +1,10 @@
-USE ControlPlanillaDB
-GO
+--USE ControlPlanillaDB
+--GO
 
-ALTER PROCEDURE [dbo].[SP_CargarDatosXML]
+--USE DB_AsistenciaEmpleados
+--GO
+
+ALTER PROCEDURE [dbo].[SP_CargarCatalogosXMLConRuta]
     -- Parametro de entrada
 	@inIdUser INT
 	, @inUsername VARCHAR(16)
@@ -11,7 +14,7 @@ ALTER PROCEDURE [dbo].[SP_CargarDatosXML]
 	, @outMessage VARCHAR(100) OUTPUT
 AS
 BEGIN
-/*
+
 	BEGIN TRY
 	
 		DECLARE @Datos xml/*Declaramos la variable Datos como un tipo XML*/
@@ -33,10 +36,10 @@ BEGIN
     
 		EXEC sp_xml_preparedocument @hdoc OUTPUT, @Datos/*Toma el identificador y a la variable con el documento y las asocia*/
 		
-		BEGIN TRANSACTION tcargarDatosPrueba
+		BEGIN TRANSACTION tcargarCatalogos
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA TipoDocumentoIdentidad
-			INSERT INTO [dbo].[TipoDocumentoIdentidad]
+			INSERT INTO [dbo].[TiposdeDocumentodeIdentidad]
 					   ([Id]
 						, [Nombre])
 			SELECT *
@@ -48,13 +51,13 @@ BEGIN
 				)
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA TipoJornada
-			INSERT INTO [dbo].[TipoJornada]
+			INSERT INTO [dbo].[TiposDeJornadas]
 							([Id]
 							, [Nombre]
 							, [HoraInicio]
 							, [HoraFin])
 			SELECT *
-			FROM OPENXML (@hdoc, '/Catalogos/TiposdeJornadas/TipodeJornada' , 1)
+			FROM OPENXML (@hdoc, '/Catalogos/TiposDeJornadas/TipoDeJornada' , 1)
 			WITH(
 				Id INT
 				, Nombre VARCHAR(255)
@@ -64,14 +67,12 @@ BEGIN
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA Puestos
 			INSERT INTO [dbo].[Puestos]
-					   ([Id]
-					   , [Nombre]
+					   ([Nombre]
 					   , [SalarioXHora])
 			SELECT *
 			FROM OPENXML (@hdoc, '/Catalogos/Puestos/Puesto' , 1)
 			WITH(
-				Id INT
-				, Nombre VARCHAR(255)
+				Nombre VARCHAR(255)
 				, SalarioXHora DECIMAL(10, 2)
 				)
 
@@ -100,7 +101,7 @@ BEGIN
 				)
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA TipoMovimientoPlanilla
-			INSERT INTO [dbo].[TipoMovimientoPlanilla]
+			INSERT INTO [dbo].[TiposDeMovimiento]
 					   ([Id]
 					   , [Nombre])
 			SELECT *
@@ -111,7 +112,7 @@ BEGIN
 				)
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA TipoDeduccion
-			INSERT INTO [dbo].[TipoDeduccion]
+			INSERT INTO [dbo].[TiposDeDeduccion]
 					   ([Id]
 					   , [Nombre]
 					   , [Obligatorio]
@@ -122,13 +123,13 @@ BEGIN
 			WITH(
 				Id INT
 				, Nombre VARCHAR(255)
-				, Obligatorio BIT
-				, Porcentual BIT
-				, Valor DECIMAL(10, 2)
+				, Obligatorio NVARCHAR(2)
+				, Porcentual NVARCHAR(2)
+				, Valor DECIMAL(10, 4)
 				)
 
 			--- SE INSERTAN LOS DATOS EN LA TABLA Usuarios
-			INSERT INTO [dbo].[Usuarios]
+			INSERT INTO [dbo].[UsuariosAdministradores]
 					   ([Username]
 					   , [Password]
 					   , [Tipo])
@@ -140,8 +141,8 @@ BEGIN
 				, tipo INT
 				)
 
-			--- SE INSERTAN LOS DATOS EN LA TABLA TiposdeEvento
-			INSERT INTO [dbo].[TiposdeEvento]
+			--- SE INSERTAN LOS DATOS EN LA TABLA TiposDeEvento
+			INSERT INTO [dbo].[TiposDeEvento]
 					   ([Id]
 					   , [Nombre])
 			SELECT *
@@ -150,6 +151,11 @@ BEGIN
 				Id INT
 				, Nombre VARCHAR(255)
 				)
+
+			-- Para guardarlo en los parametros de la bitacora
+			DECLARE @json NVARCHAR(MAX);
+			SET @json = '{"IdUsuario": "' + CONVERT(NVARCHAR, @inIdUser) + '", "Username": "' + @inUsername + 
+			'", "PostIP": "' + @inPostIP + '", "Path": "' + @inRutaXML + '", "Resultado": ' + CAST(@outRetorno AS NVARCHAR(1)) + '}';
 
 			-- Se insertan los valores en la tabla BitacoraEventos
 			INSERT INTO dbo.BitacoraEventos
@@ -166,12 +172,11 @@ BEGIN
 				, @inPostIP
 				, GETDATE()
 				, 16 /* HAY QUE REVISAR SI SE AGREGA A UN ADENDUM DE LA ESPECIF. DEL PROYECTO,
-				YA QUE NO SE ENCUENTRA PARA CARGAR DATOS DE PRUEBA*/
-				, 'Parámetros: 1.' + @inIdUser + ', 2.' + @inUsername + ', 3.' +
-					@inPostIP + '4.' + @inRutaXML + '.'
+				YA QUE NO SE ENCUENTRA PARA CARGAR CATALOGOS*/
+				, @json
 			)
 
-		COMMIT TRANSACTION tcargarDatosPrueba
+		COMMIT TRANSACTION tcargarCatalogos
 
 		EXEC sp_xml_removedocument @hdoc/*Remueve el documento XML de la memoria*/
 
@@ -183,7 +188,7 @@ BEGIN
 
 		IF @@TRANCOUNT>0
 		BEGIN
-			ROLLBACK TRANSACTION tcargarDatosPrueba;
+			ROLLBACK TRANSACTION tcargarCatalogos;
 		END;
 
 		-- Registra el error en la tabla dbo.DBErrors
@@ -218,12 +223,6 @@ BEGIN
 	END CATCH
 	
 	SET NOCOUNT OFF;
-	*/
-
-	DECLARE @xmlData xml
-
-	SET @xmlData = (SELECT * FROM OPENROWSET(BULk 'C:\Users\Usuario\Downloads\Catalogos2.xml', SINGLE_BLOB) AS datos);
-
 
 END
 
